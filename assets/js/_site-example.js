@@ -17,6 +17,36 @@
     }
   };
 
+  var addPageContent = function (data, loaded, content, progress) {
+    content.innerHTML = data;
+    var imgs = content.querySelectorAll('img');
+
+    if (imgs) {
+      var count = imgs.length, size = Math.ceil(50/count);
+
+      progressBar({ lengthComputable: true, loaded: loaded, total: 100 }, progress);
+
+      for (var i = 0; i < imgs.length; i++) {
+        loaded += size;
+        var img = new Image();
+        img.onload = function () {
+          progressBar({ lengthComputable: true, loaded: loaded, total: 100 }, progress);
+        };
+        img.src = imgs[i].getAttribute('src');
+      }
+
+    } else {
+        progressBar({ lengthComputable: true, loaded: 100, total: 100 }, progress);
+    }
+  };
+
+  var setupNavigation = function (navigation, uri) {
+    for (var i = 0; i < navigation.length; i++) {
+      mix.removeClass(navigation[i].parentNode, 'selected');
+      if (navigation[i].getAttribute('href') === uri) mix.addClass(navigation[i].parentNode, 'selected');
+    }
+  }
+
   // Handle page history and reloading content
   if (window.addEventListener && 'pushState' in history) {
 
@@ -30,14 +60,8 @@
       if (initialPop) return;
 
       var uri = (location.pathname === '/') ? '/index' : location.pathname;
-
       var navigation = document.querySelectorAll('header a');
-
-      for (var i = 0; i < navigation.length; i++) {
-        mix.removeClass(navigation[i].parentNode, 'selected');
-        if (navigation[i].getAttribute('href') === uri) mix.addClass(navigation[i].parentNode, 'selected');
-      }
-      
+      setupNavigation(navigation, uri);
       var loaded = 50;
 
       mix.navigate({ 
@@ -45,27 +69,7 @@
         uri: uri,
         uriPrefix: '/fragment',
         success: function (data) {
-          document.getElementById('js-content').innerHTML = data;
-
-          var imgs = document.getElementById('js-content').querySelectorAll('img');
-
-          if (imgs) {
-            var count = imgs.length
-            , size = Math.ceil(50/count);
-
-            progressBar({ lengthComputable: true, loaded: loaded, total: 100 }, document.getElementById('js-progress'));
-
-            for (var i = 0; i < imgs.length; i++) {
-              loaded += size;
-              var img = new Image();
-              img.onload = function () {
-                progressBar({ lengthComputable: true, loaded: loaded, total: 100 }, document.getElementById('js-progress'));
-              };
-              img.src = imgs[i].getAttribute('src');
-            }
-          } else {
-              progressBar({ lengthComputable: true, loaded: 100, total: 100 }, document.getElementById('js-progress'));
-          }
+          addPageContent(data, loaded, document.getElementById('js-content'), document.getElementById('js-progress'));
         },
         error: function (status, statusText) {
           console.log(status, statusText);
@@ -85,43 +89,18 @@
 
     e.preventDefault();
 
-    for (var i = 0; i < navigation.length; i++)
-      mix.removeClass(navigation[i].parentNode, 'selected');
-
-    if (e.target.parentNode.nodeName === 'LI')
-      mix.addClass(e.target.parentNode, 'selected');
+    var uri = (e.target.pathname === '/') ? '/index' : e.target.pathname;
+    setupNavigation(navigation, uri);
 
     var loaded = 50;
 
-    //progressBar({ lengthComputable: true, loaded: loaded, total: 100 }, document.getElementById('js-progress'));
-
     mix.navigate({ 
       method: 'get', 
-      uri: (e.target.pathname === '/') ? '/index' : e.target.pathname,
+      uri: uri,
       uriPrefix: '/fragment',
       historyUri: e.target.pathname,
       success: function (data) {
-        document.getElementById('js-content').innerHTML = data;
-
-        var imgs = document.getElementById('js-content').querySelectorAll('img');
-
-        if (imgs) {
-          var count = imgs.length
-          , size = Math.ceil(50/count);
-
-          progressBar({ lengthComputable: true, loaded: loaded, total: 100 }, document.getElementById('js-progress'));
-
-          for (var i = 0; i < imgs.length; i++) {
-            loaded += size;
-            var img = new Image();
-            img.onload = function () {
-              progressBar({ lengthComputable: true, loaded: loaded, total: 100 }, document.getElementById('js-progress'));
-            };
-            img.src = imgs[i].getAttribute('src');
-          }
-        } else {
-            progressBar({ lengthComputable: true, loaded: 100, total: 100 }, document.getElementById('js-progress'));
-        }
+        addPageContent(data, loaded, document.getElementById('js-content'), document.getElementById('js-progress'));
       },
       error: function (status, statusText) {
         console.log(status, statusText);
