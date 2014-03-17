@@ -127,13 +127,27 @@ window.mix = (function (window, document, undefined) {
 
   // Handle page history and reloading content
   if (window.addEventListener && 'pushState' in history) {
+
     var historyInitialUri = location.href, pushStatePopped = false;
+
     window.addEventListener('popstate', function (e) {
+
       var initialPop = !pushStatePopped && location.href == historyInitialUri;
       pushStatePopped = true;
+
       if (initialPop) return;
+
       var uri = (location.pathname === '/') ? '/index' : location.pathname;
+
+      var navigation = document.querySelectorAll('header a');
+
+      for (var i = 0; i < navigation.length; i++) {
+        mix.removeClass(navigation[i].parentNode, 'selected');
+        if (navigation[i].getAttribute('href') === uri) mix.addClass(navigation[i].parentNode, 'selected');
+      }
+      
       var loaded = 50;
+
       mix.navigate({ 
         method: 'get', 
         uri: uri,
