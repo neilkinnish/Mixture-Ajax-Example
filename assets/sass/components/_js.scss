@@ -1,0 +1,11 @@
+/** JS */
+
+#js-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  height: 5px;
+  background-color: red;
+  transition: all .4s ease-in;
+}

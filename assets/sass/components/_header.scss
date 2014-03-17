@@ -1,0 +1,45 @@
+/** Page Header */
+
+.page-head{
+  background-color: #f9f9f9;
+  padding: 1em;
+}
+
+.site-logo{
+  @include font-size(30px);
+
+}
+
+.site-nav{
+  list-style: none;
+
+  li{
+    display: inline-block;
+    background-color: #999;
+    padding:.2em .5em;
+    margin-right: .5em;
+
+    a{
+      color: #fff;
+    }
+  }
+
+  li:hover,
+  li.selected{
+    background-color: #333;
+  }
+}
+
+.notice{
+  background-color: #ccc;
+  padding: 1em;
+  color: #333;
+
+  em{
+    font-weight: 700;
+  }
+}
+
+.content{
+  padding: 1em;
+}

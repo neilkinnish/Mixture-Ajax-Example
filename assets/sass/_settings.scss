@@ -1,0 +1,21 @@
+/* Settings */
+$base-font-size: 15px!default;
+$base-line-height: 23px!default;
+
+$default-font: sans-serif!default;
+
+$page-bgrnd: #fff!default;
+$font-color: #3d4351!default;
+$link-color: #8dc63f!default;
+$link-hover: #333!default;
+$selection-color: #8dc63f!default;
+
+$base-spacing-unit: $base-line-height!default;
+$half-spacing-unit: $base-spacing-unit / 2!default;
+$line-height-ratio: $base-line-height / $base-font-size;
+
+$tiny: 320;
+$small: 600;
+$medium: 760;
+$med-large: 860;
+$large: 1100;

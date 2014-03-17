@@ -1,0 +1,36 @@
+/** Core */
+
+html{
+  font-family: $default-font;
+  font-size: 100%;
+  font-weight: 400;
+  line-height: $line-height-ratio;
+  color: $font-color;
+  background-color: $page-bgrnd;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: none;
+}
+
+html,body{
+  height: 100%;
+}
+
+.wrapper{
+  min-height: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+canvas{
+  -ms-touch-action: double-tap-zoom;
+}
+
+a{
+  color: $link-color;
+  text-decoration: none;
+
+  &:hover{
+    color: $link-hover;
+    text-decoration: underline;
+  }
+}

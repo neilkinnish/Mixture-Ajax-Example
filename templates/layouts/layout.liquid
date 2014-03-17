@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Example</title>
+        <link rel="shortcut icon" type="image/ico" href="/favicon.ico" />
+        {{ "app.css" | asset_url | stylesheet_tag }}
+        <script src="{{ "scripts.js" | asset_url }}" async></script>
+    </head>
+    <body>
+        <div id="wrapper">
+            {% include "header" %}
+            <div class="notice"><em>{{ 'now' | date: "%H:%M:%S" }}</em> time generated on page reload.</div>
+            <div id="js-content" class="content">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </body>
+</html>
