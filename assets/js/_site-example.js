@@ -17,11 +17,12 @@
     }
   };
 
-  var addPageContent = function (data, loaded, content, progress) {
+  var addPageContent = function (data, content, progress) {
     content.innerHTML = data;
     var imgs = content.querySelectorAll('img');
 
     if (imgs) {
+      var loaded = 50;
       var count = imgs.length, size = Math.ceil(50/count);
 
       progressBar({ lengthComputable: true, loaded: loaded, total: 100 }, progress);
@@ -62,14 +63,13 @@
       var uri = (location.pathname === '/') ? '/index' : location.pathname;
       var navigation = document.querySelectorAll('header a');
       setupNavigation(navigation, uri);
-      var loaded = 50;
 
       mix.navigate({ 
         method: 'get', 
         uri: uri,
         uriPrefix: '/fragment',
         success: function (data) {
-          addPageContent(data, loaded, document.getElementById('js-content'), document.getElementById('js-progress'));
+          addPageContent(data, document.getElementById('js-content'), document.getElementById('js-progress'));
         },
         error: function (status, statusText) {
           console.log(status, statusText);
@@ -92,15 +92,13 @@
     var uri = (e.target.pathname === '/') ? '/index' : e.target.pathname;
     setupNavigation(navigation, uri);
 
-    var loaded = 50;
-
     mix.navigate({ 
       method: 'get', 
       uri: uri,
       uriPrefix: '/fragment',
       historyUri: e.target.pathname,
       success: function (data) {
-        addPageContent(data, loaded, document.getElementById('js-content'), document.getElementById('js-progress'));
+        addPageContent(data, document.getElementById('js-content'), document.getElementById('js-progress'));
       },
       error: function (status, statusText) {
         console.log(status, statusText);
