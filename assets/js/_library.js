@@ -47,44 +47,6 @@ window.mix = (function (window, document, undefined) {
     }
   };
 
-  var progressBar = function (e, el) {
-    if (e.lengthComputable) {
-      var percent = (e.loaded / e.total) * 100;
-      el.style.opacity = (percent >= 100) ? 0 : 1;
-      el.style.width = percent + '%';
-    } else { // if not computable, fake it
-      el.style.opacity = 1;
-      el.style.width = 50 + '%';
-    }
-  };
-
-  var browserHistory = function (progressId, contentEl) {
-    if (window.addEventListener && 'pushState' in history) {
-      var historyInitialUri = location.href, pushStatePopped = false;
-      document.body.innerHTML = '<div id="' + progressId + '"></div>' + document.body.innerHTML;
-      window.addEventListener('popstate', function (e) {
-        var initialPop = !pushStatePopped && location.href == historyInitialUri;
-        pushStatePopped = true;
-        if (initialPop) return;
-        var uri = (location.pathname === '/') ? '/index' : location.pathname;
-        navigate({ 
-          method: 'get', 
-          uri: uri,
-          uriPrefix: '/fragment',
-          success: function (data) {
-            if (contentEl) document.getElementById(contentEl).innerHTML = data;
-          },
-          error: function (status, statusText) {
-            console.log(status, statusText);
-          },
-          progress: function (e) {
-            if (progressId) mix.progressBar(e, document.getElementById(progressId));
-          }
-        });
-      }, false);
-    }
-  };
-
   var navigate = function (options) {
 
     var xhr = new XMLHttpRequest()
@@ -139,8 +101,6 @@ window.mix = (function (window, document, undefined) {
   return {
     navigate: navigate,
     click: click,
-    progressBar: progressBar,
-    browserHistory: browserHistory,
     removeClass: removeClass,
     addClass: addClass
   };

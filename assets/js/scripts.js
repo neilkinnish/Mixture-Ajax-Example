@@ -47,44 +47,6 @@ window.mix = (function (window, document, undefined) {
     }
   };
 
-  var progressBar = function (e, el) {
-    if (e.lengthComputable) {
-      var percent = (e.loaded / e.total) * 100;
-      el.style.opacity = (percent >= 100) ? 0 : 1;
-      el.style.width = percent + '%';
-    } else { // if not computable, fake it
-      el.style.opacity = 1;
-      el.style.width = 50 + '%';
-    }
-  };
-
-  var browserHistory = function (progressId, contentEl) {
-    if (window.addEventListener && 'pushState' in history) {
-      var historyInitialUri = location.href, pushStatePopped = false;
-      document.body.innerHTML = '<div id="' + progressId + '"></div>' + document.body.innerHTML;
-      window.addEventListener('popstate', function (e) {
-        var initialPop = !pushStatePopped && location.href == historyInitialUri;
-        pushStatePopped = true;
-        if (initialPop) return;
-        var uri = (location.pathname === '/') ? '/index' : location.pathname;
-        navigate({ 
-          method: 'get', 
-          uri: uri,
-          uriPrefix: '/fragment',
-          success: function (data) {
-            if (contentEl) document.getElementById(contentEl).innerHTML = data;
-          },
-          error: function (status, statusText) {
-            console.log(status, statusText);
-          },
-          progress: function (e) {
-            if (progressId) mix.progressBar(e, document.getElementById(progressId));
-          }
-        });
-      }, false);
-    }
-  };
-
   var navigate = function (options) {
 
     var xhr = new XMLHttpRequest()
@@ -139,8 +101,6 @@ window.mix = (function (window, document, undefined) {
   return {
     navigate: navigate,
     click: click,
-    progressBar: progressBar,
-    browserHistory: browserHistory,
     removeClass: removeClass,
     addClass: addClass
   };
@@ -150,7 +110,45 @@ window.mix = (function (window, document, undefined) {
 
   'use strict';
 
-  mix.browserHistory('js-progress', 'js-content');
+  // Add progress bar to the page
+  document.body.innerHTML = '<div id="js-progress"></div>' + document.body.innerHTML;
+
+  var progressBar = function (e, el) {
+    if (e.lengthComputable) {
+      var percent = (e.loaded / e.total) * 100;
+      if (percent > 100) percent = 100;
+      el.style.opacity = (percent >= 100) ? 0 : 1;
+      el.style.width = percent + '%';
+    } else { // if not computable, fake it
+      el.style.opacity = 1;
+      el.style.width = 50 + '%';
+    }
+  };
+
+  // Handle page history and reloading content
+  if (window.addEventListener && 'pushState' in history) {
+    var historyInitialUri = location.href, pushStatePopped = false;
+    window.addEventListener('popstate', function (e) {
+      var initialPop = !pushStatePopped && location.href == historyInitialUri;
+      pushStatePopped = true;
+      if (initialPop) return;
+      var uri = (location.pathname === '/') ? '/index' : location.pathname;
+      navigate({ 
+        method: 'get', 
+        uri: uri,
+        uriPrefix: '/fragment',
+        success: function (data) {
+          document.getElementById('js-content').innerHTML = data;
+        },
+        error: function (status, statusText) {
+          console.log(status, statusText);
+        },
+        progress: function (e) {
+          progressBar(e, document.getElementById('js-progress'));
+        }
+      });
+    }, false);
+  }
 
   // Get the navigation items
   var navigation = document.querySelectorAll('header a');
@@ -166,7 +164,9 @@ window.mix = (function (window, document, undefined) {
     if (e.target.parentNode.nodeName === 'LI')
       mix.addClass(e.target.parentNode, 'selected');
 
-    mix.progressBar({ lengthComputable: true, loaded: 10, total: 100 }, document.getElementById('js-progress'));
+    var loaded = 50;
+
+    //progressBar({ lengthComputable: true, loaded: loaded, total: 100 }, document.getElementById('js-progress'));
 
     mix.navigate({ 
       method: 'get', 
@@ -175,14 +175,32 @@ window.mix = (function (window, document, undefined) {
       historyUri: e.target.pathname,
       success: function (data) {
         document.getElementById('js-content').innerHTML = data;
-        
-        mix.progressBar({ lengthComputable: true, loaded: 100, total: 100 }, document.getElementById('js-progress'));
+
+        var imgs = document.getElementById('js-content').querySelectorAll('img');
+
+        if (imgs) {
+          var count = imgs.length
+          , size = Math.ceil(50/count);
+
+          progressBar({ lengthComputable: true, loaded: loaded, total: 100 }, document.getElementById('js-progress'));
+
+          for (var i = 0; i < imgs.length; i++) {
+            loaded += size;
+            var img = new Image();
+            img.onload = function () {
+              progressBar({ lengthComputable: true, loaded: loaded, total: 100 }, document.getElementById('js-progress'));
+            };
+            img.src = imgs[i].getAttribute('src');
+          }
+        } else {
+            progressBar({ lengthComputable: true, loaded: 100, total: 100 }, document.getElementById('js-progress'));
+        }
       },
       error: function (status, statusText) {
         console.log(status, statusText);
       },
       progress: function (e) {
-        mix.progressBar(e, document.getElementById('js-progress'));
+        progressBar(e, document.getElementById('js-progress'));
       }
     });
 

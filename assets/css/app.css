@@ -386,7 +386,9 @@ a {
 .site-logo {
   font-size: 30px;
   font-size: 2rem;
-  line-height: 1.53333; }
+  line-height: 1.53333;
+  margin-bottom: .5em;
+  display: inline-block; }
 
 .site-nav {
   list-style: none; }
@@ -410,6 +412,12 @@ a {
 
 .content {
   padding: 1em; }
+  .content p {
+    margin-bottom: 1em; }
+  .content img {
+    display: inline-block;
+    max-width: 20%;
+    margin-right: 1em; }
 
 /** Page Footer */
 /** URL specific styles */
