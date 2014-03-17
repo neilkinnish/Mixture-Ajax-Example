@@ -25,12 +25,33 @@
       pushStatePopped = true;
       if (initialPop) return;
       var uri = (location.pathname === '/') ? '/index' : location.pathname;
-      navigate({ 
+      var loaded = 50;
+      mix.navigate({ 
         method: 'get', 
         uri: uri,
         uriPrefix: '/fragment',
         success: function (data) {
           document.getElementById('js-content').innerHTML = data;
+
+          var imgs = document.getElementById('js-content').querySelectorAll('img');
+
+          if (imgs) {
+            var count = imgs.length
+            , size = Math.ceil(50/count);
+
+            progressBar({ lengthComputable: true, loaded: loaded, total: 100 }, document.getElementById('js-progress'));
+
+            for (var i = 0; i < imgs.length; i++) {
+              loaded += size;
+              var img = new Image();
+              img.onload = function () {
+                progressBar({ lengthComputable: true, loaded: loaded, total: 100 }, document.getElementById('js-progress'));
+              };
+              img.src = imgs[i].getAttribute('src');
+            }
+          } else {
+              progressBar({ lengthComputable: true, loaded: 100, total: 100 }, document.getElementById('js-progress'));
+          }
         },
         error: function (status, statusText) {
           console.log(status, statusText);
