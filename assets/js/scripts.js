@@ -2,6 +2,10 @@ window.mix = (function (window, document, undefined) {
 
   'use strict';
 
+  /** 
+    Class manipulation: _hasClass, _addClass, _removeClass
+    http://toddmotto.com/apollo-js-standalone-class-manipulation-api-for-html5-and-legacy-dom
+  */
   var exports = {}, _hasClass, _addClass, _removeClass;
 
   var _forEach = function (array, callback) {

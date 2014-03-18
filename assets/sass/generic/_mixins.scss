@@ -7,7 +7,7 @@
     line-height: ceil($font-size / $base-line-height) * ($base-line-height / $font-size);
 }
 
-// Media Queries
+// Media Query Mixins: https://github.com/sturobson/sassifaction
 @mixin mq($point, $IE9: false, $query1: min, $query2: width){
   @if $IE9 == true{
     .lt-ie9 & {
