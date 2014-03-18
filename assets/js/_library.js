@@ -2,52 +2,78 @@ window.mix = (function (window, document, undefined) {
 
   'use strict';
 
-  var device = function () {
+  var exports = {}, _hasClass, _addClass, _removeClass;
+
+  var _forEach = function (array, callback) {
+    array = array.split(' ');
+    for (var i = 0; i < array.length; i++) {
+      callback(array[i], i);
+    }
+  };
+
+  var _device = function () {
     if (window.addEventListener)
       return 'ontouchstart' in window ? 'touchstart' : 'click';
     else 
       return 'click';
   };
 
-  var hasClass = function (el, className) {
-    return new RegExp(' ' + className + ' ').test(' ' + el.className + ' ');
-  }
-
-  var addClass = function (el, className) {
-    if (el && !hasClass(el, className)) {
-      el.className += ' ' + className;
-    }
-  }
-
-  var removeClass = function (el, className) {
-    var newClass = ' ' + el.className.replace(/[\t\r\n]/g, ' ') + ' ';
-    if (hasClass(el, className)) {
-      while (newClass.indexOf(' ' + className + ' ') >= 0 ) {
-        newClass = newClass.replace(' ' + className + ' ', ' ');
+  if (document.documentElement.classList) {
+    _hasClass = function (elem, className) {
+      return elem.classList.contains(className);
+    };
+    _addClass = function (elem, className) {
+      elem.classList.add(className);
+    };
+    _removeClass = function (elem, className) {
+      elem.classList.remove(className);
+    };
+  } else {
+    _hasClass = function (elem, className) {
+      return new RegExp('(^|\\s)' + className + '(\\s|$)').test(elem.className);
+    };
+    _addClass = function (elem, className) {
+      if (!exports.hasClass(elem, className)) {
+        elem.className += (elem.className ? ' ' : '') + className;
       }
-      el.className = newClass.replace(/^\s+|\s+$/g, '');
-    }
+    };
+    _removeClass = function (elem, className) {
+      if (exports.hasClass(elem, className)) {
+        elem.className = elem.className.replace(new RegExp('(^|\\s)*' + className + '(\\s|$)*', 'g'), '');
+      }
+    };
   }
 
-  var removeClassRegex = function (el, regex) {
-    var newClass = el.className.match(regex);
-    removeClass(el, newClass);
-  }
+  exports.hasClass = function (elem, className) {
+    return _hasClass(elem, className);
+  };
 
-  var attach = function (obj, event, fn) {
+  exports.addClass = function (elem, classes) {
+    _forEach(classes, function (className) {
+      _addClass(elem, className);
+    });
+  };
+
+  exports.removeClass = function (elem, classes) {
+    _forEach(classes, function (className) {
+      _removeClass(elem, className);
+    });
+  };
+
+  exports.attachEvent = function (obj, event, fn) {
     if (window.addEventListener)
       obj.addEventListener(event, fn, false);
     else
       obj.attachEvent('on' + event, fn);
   };
 
-  var click = function (obj, callback) {
+  exports.click = function (obj, callback) {
     for (var i = 0; i < obj.length; i++) {
-      attach(obj[i], device(), callback);
+      this.attachEvent(obj[i], _device(), callback);
     }
   };
 
-  var navigate = function (options) {
+  exports.navigate = function (options) {
 
     var xhr = new XMLHttpRequest()
     , method = options.method || 'get'
@@ -98,11 +124,6 @@ window.mix = (function (window, document, undefined) {
 
   };
 
-  return {
-    navigate: navigate,
-    click: click,
-    removeClass: removeClass,
-    addClass: addClass
-  };
+  return exports;
 
 })(window, document);
