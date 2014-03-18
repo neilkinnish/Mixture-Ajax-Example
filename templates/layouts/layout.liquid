@@ -9,10 +9,11 @@
     <body>
         <div id="wrapper">
             {% include "header" %}
-            <div class="notice"><em>{{ 'now' | date: "%H:%M:%S" }}</em> time generated on page reload.</div>
+            <div class="notice">Page loaded: {{ 'now' | date: "%H:%M:%S" }}</div>
             <div id="js-content" class="content">
                 {% block content %}{% endblock %}
             </div>
+            {% include "footer" %}
         </div>
     </body>
 </html>

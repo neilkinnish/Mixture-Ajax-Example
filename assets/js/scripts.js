@@ -74,7 +74,6 @@ window.mix = (function (window, document, undefined) {
   };
 
   exports.navigate = function (options) {
-
     var xhr = new XMLHttpRequest()
     , method = options.method || 'get'
     , dataType = options.dataType || 'html'
@@ -121,7 +120,6 @@ window.mix = (function (window, document, undefined) {
     
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.send((options.data) ? urlstringify(options.data) : null);
-
   };
 
   return exports;
@@ -131,10 +129,11 @@ window.mix = (function (window, document, undefined) {
 
   'use strict';
 
-  // Add progress bar to the page
+  /** Add progress bar to the page */
   document.body.innerHTML = '<div id="js-progress"></div>' + document.body.innerHTML;
 
   var progressBar = function (e, el) {
+
     if (e.lengthComputable) {
       var percent = (e.loaded / e.total) * 100;
       if (percent > 100) percent = 100;
@@ -144,9 +143,12 @@ window.mix = (function (window, document, undefined) {
       el.style.opacity = 1;
       el.style.width = 50 + '%';
     }
+
   };
 
+  /** Function to add content to element, loop through images if any and update progress bar  */
   var addPageContent = function (data, content, progress) {
+
     content.innerHTML = data;
     var imgs = content.querySelectorAll('img');
 
@@ -168,16 +170,20 @@ window.mix = (function (window, document, undefined) {
     } else {
         progressBar({ lengthComputable: true, loaded: 100, total: 100 }, progress);
     }
+
   };
 
+  /** Updates the navigation selected */
   var setupNavigation = function (navigation, uri) {
+
     for (var i = 0; i < navigation.length; i++) {
       mix.removeClass(navigation[i].parentNode, 'selected');
       if (navigation[i].getAttribute('href') === uri) mix.addClass(navigation[i].parentNode, 'selected');
     }
+
   }
 
-  // Handle page history and reloading content
+  /** Handles browser history via the html5 history api */
   if (window.addEventListener && 'pushState' in history) {
 
     var historyInitialUri = location.href, pushStatePopped = false;
@@ -207,13 +213,14 @@ window.mix = (function (window, document, undefined) {
           progressBar(e, document.getElementById('js-progress'));
         }
       });
+
     }, false);
+    
   }
 
-  // Get the navigation items
   var navigation = document.querySelectorAll('header a');
 
-  // Navigation events
+  /** Click event / Ajax page loading with progress */
   mix.click(navigation, function (e) {
 
     e.preventDefault();

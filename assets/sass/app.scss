@@ -5,14 +5,15 @@
 @import "generic/mixins";
 @import "default/normalize";
 @import "default/base";
-@import "hacks/clearfix";
-@import "generic/helpers";
+//@import "hacks/clearfix";
+//@import "generic/helpers";
 
 /** Site */
 @import "components/core";
-@import "components/animations";
-@import "components/svg";
+//@import "components/animations";
+//@import "components/svg";
 @import "components/header";
+@import "components/content";
 @import "components/footer";
-@import "components/url-styles";
+//@import "components/url-styles";
 @import "components/js";

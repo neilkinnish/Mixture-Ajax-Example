@@ -25,32 +25,11 @@
     }
   }
 
-  li:hover,
+  li:hover{
+    background-color: #ff6600;
+  }
+
   li.selected{
     background-color: #333;
-  }
-}
-
-.notice{
-  background-color: #ccc;
-  padding: 1em;
-  color: #333;
-
-  em{
-    font-weight: 700;
-  }
-}
-
-.content{
-  padding: 1em;
-
-  p{
-    margin-bottom: 1em;
-  }
-
-  img{
-    display: inline-block;
-    max-width: 20%;
-    margin-right: 1em;
   }
 }

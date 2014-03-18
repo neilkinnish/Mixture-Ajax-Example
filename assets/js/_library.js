@@ -74,7 +74,6 @@ window.mix = (function (window, document, undefined) {
   };
 
   exports.navigate = function (options) {
-
     var xhr = new XMLHttpRequest()
     , method = options.method || 'get'
     , dataType = options.dataType || 'html'
@@ -121,7 +120,6 @@ window.mix = (function (window, document, undefined) {
     
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.send((options.data) ? urlstringify(options.data) : null);
-
   };
 
   return exports;

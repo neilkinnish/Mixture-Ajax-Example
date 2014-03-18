@@ -345,7 +345,6 @@ textarea:focus {
   background-color: #8dc63f;
   color: #000; }
 
-/** Clearfix */
 /** Site */
 /** Core */
 html {
@@ -370,14 +369,12 @@ canvas {
   -ms-touch-action: double-tap-zoom; }
 
 a {
-  color: #8dc63f;
+  color: #ff6600;
   text-decoration: none; }
   a:hover {
     color: #333333;
     text-decoration: underline; }
 
-/** Animations */
-/** SVG */
 /** Page Header */
 .page-head {
   background-color: #f9f9f9;
@@ -399,10 +396,12 @@ a {
     margin-right: .5em; }
     .site-nav li a {
       color: #fff; }
-  .site-nav li:hover,
+  .site-nav li:hover {
+    background-color: #ff6600; }
   .site-nav li.selected {
     background-color: #333; }
 
+/** Content */
 .notice {
   background-color: #ccc;
   padding: 1em;
@@ -420,7 +419,9 @@ a {
     margin-right: 1em; }
 
 /** Page Footer */
-/** URL specific styles */
+.page-foot {
+  padding: 1em; }
+
 /** JS */
 #js-progress {
   position: absolute;
@@ -431,5 +432,4 @@ a {
   background-color: red;
   -webkit-transition: all .4s ease-in;
   transition: all .4s ease-in; }
-
 
