@@ -9,7 +9,7 @@
     <body>
         <div id="wrapper">
             {% include "header" %}
-            <div class="notice">Page loaded: {{ 'now' | date: "%H:%M:%S" }}</div>
+            <div class="notice">Initial page load at: {{ 'now' | date: "%H:%M:%S" }}</div>
             <div id="js-content" class="content">
                 {% block content %}{% endblock %}
             </div>

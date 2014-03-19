@@ -10,7 +10,7 @@
     if (e.lengthComputable) {
       var percent = (e.loaded / e.total) * 100;
       if (percent > 100) percent = 100;
-      el.style.opacity = (percent >= 100) ? 0 : 1;
+      el.style.opacity = (percent >= 100 || percent <= 0) ? 0 : 1;
       el.style.width = percent + '%';
     } else { // if not computable, fake it
       el.style.opacity = 1;
@@ -95,6 +95,8 @@
 
   /** Click event / Ajax page loading with progress */
   mix.click(navigation, function (e) {
+
+    progressBar({ lengthComputable: true, loaded: 0, total: 100 }, document.getElementById('js-progress'));
 
     e.preventDefault();
 
