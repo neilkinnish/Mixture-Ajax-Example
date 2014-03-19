@@ -1,4 +1,4 @@
-Mixture-Ajax-Example
+Mixture Ajax Example
 ====================
 
 A simple hybrid / ajax example [Mixture](http://mixture.io) project.
