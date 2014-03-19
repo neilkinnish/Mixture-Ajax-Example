@@ -16,7 +16,7 @@
   "preprocessorScriptOutput": "assets/js",
   "preprocessorStyleOutput": "assets/css",
   "projectDescription": "A simple example ajax + mixture",
-  "projectName": "Example Ajax",
+  "projectName": "Ajax Demo",
   "publishedId": null,
   "routes": [
     {
